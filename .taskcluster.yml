@@ -175,6 +175,8 @@ tasks:
           features:
             taskclusterProxy:
               true
+          capabilities:
+            privileged: true
           maxRunTime: 3600
           image: mozilla/bugbug-commit-retrieval:latest
           env:
@@ -187,6 +189,7 @@ tasks:
                git -c advice.detachedHead=false checkout ${head_rev} &&
                pip install --quiet . &&
                pip install --quiet -r test-requirements.txt &&
+               pip install -U docker-compose &&
                python -c 'import os; print(os.environ.keys())' &&
                bash ./scripts/integration_test.sh"
         metadata:
