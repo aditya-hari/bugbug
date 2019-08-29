@@ -178,7 +178,7 @@ tasks:
               true
           capabilities:
             privileged: true
-          maxRunTime: 3600
+          maxRunTime: 10800
           image: mozilla/bugbug-commit-retrieval:latest
           env:
             TC_SECRET_ID: project/relman/bugbug/integration
