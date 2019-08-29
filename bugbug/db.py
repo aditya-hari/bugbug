@@ -71,7 +71,9 @@ def download_support_file(path, file_name):
         if path.endswith(".zst"):
             extract_file(path)
     except requests.exceptions.HTTPError:
-        logger.exception(f"{file_name} is not yet available to download for {path}")
+        logger.info(
+            f"{file_name} is not yet available to download for {path}", exc_info=True
+        )
 
 
 # Download and extract databases.
@@ -89,8 +91,8 @@ def download(path, force=False, support_files_too=False):
             utils.download_check_etag(url, zst_path)
 
         except requests.exceptions.HTTPError:
-            logger.info(f"{url} is not yet available to download")
-            raise
+            logger.info(f"{url} is not yet available to download", exc_info=True)
+            return
 
     extract_file(zst_path)
 
