@@ -202,6 +202,7 @@ tasks:
                apt-get update &&
                apt-get install -y docker-ce &&
                python -c 'import os; print(os.environ.keys())' &&
+               docker ps &&
                bash ./scripts/integration_test.sh"
         metadata:
           name: bugbug integration test
