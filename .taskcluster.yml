@@ -193,7 +193,7 @@ tasks:
                git -c advice.detachedHead=false checkout ${head_rev} &&
                pip install --quiet . &&
                pip install --quiet -r test-requirements.txt &&
-               pip install -U docker-compose &&
+               pip install -U docker-compose==17.04.0 &&
                echo 'Install Docker' &&
                apt-get update &&
                apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common &&
