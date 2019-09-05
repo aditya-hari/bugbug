@@ -178,6 +178,7 @@ tasks:
           features:
             taskclusterProxy:
               true
+            dind: true
           capabilities:
             privileged: true
           maxRunTime: 10800
