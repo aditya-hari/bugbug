@@ -31,6 +31,9 @@ bugbug-train --limit 30000 --no-download backout
 # taskcluster easily
 cd ../
 pip install -r requirements.txt
+cd ../
+pwd
+ls http_service/models/
 
 export REDIS_URL=redis://localhost:6379/4
 
