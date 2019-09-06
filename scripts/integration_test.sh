@@ -26,18 +26,33 @@ bugbug-train --limit 500 --no-download defectenhancementtask
 # Then train a commit model
 bugbug-train --limit 30000 --no-download backout
 
-# Then build docker images
-cd ../..;
-docker-compose build --pull bugbug-base
+# Then spin up the http service up
+# This part duplicated the http service Dockerfiles because we cannot spin up Docker containers on
+# taskcluster easily
+cd ../
+pip install -r requirements.txt
 
-cd http_service/models;
-docker-compose build --build-arg CHECK_MODELS=0
+export REDIS_URL=redis://localhost:6379/4
 
-# Start the docker containers
-env BUGBUG_ALLOW_MISSING_MODELS=1 docker-compose up -d --force-recreate
+# Start Redis
+redis-server >/dev/null 2>&1 &
+redis_pid=$!
+
+sleep 1
+
+# Uncomment following line to clean up the redis-server
+# redis-cli -u $REDIS_URL FLUSHDB
+
+# Start the http server
+gunicorn -b 127.0.0.1:8000 http_service.app --preload --timeout 30 -w 3 &
+gunicorn_pid=$!
+
+# Start the background worker
+env BUGBUG_ALLOW_MISSING_MODELS=1 python worker.py high default low &
+worker_pid=$!
 
 # Ensure we take down the containers at the end
-trap "docker-compose logs && docker-compose down" EXIT
+trap 'kill $gunicorn_pid && kill $worker_pid && kill $redis_pid' EXIT
 
 # Then check that we can correctly classify a bug
-sleep 5 && python ../tests/test_integration.py
+sleep 10 && python tests/test_integration.py
