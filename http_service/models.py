@@ -126,6 +126,10 @@ def classify_bug(
 
     model = get_model(model_name)
 
+    if not model:
+        print("Missing model %r, aborting" % model_name)
+        return "NOK"
+
     model_extra_data = model.get_extra_data()
 
     # TODO: Classify could choke on a single bug which could make the whole
