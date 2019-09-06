@@ -39,11 +39,15 @@ def change_time_key(model_name, bug_id):
 
 def get_model(model_name):
     if model_name not in MODEL_CACHE:
-        print("Recreating the model in cache")
+        print("Recreating the %r model in cache" % model_name)
         try:
             model = load_model(model_name, MODELS_DIR)
         except FileNotFoundError:
             if ALLOW_MISSING_MODELS:
+                print(
+                    "Missing %r model, skipping because ALLOW_MISSING_MODELS is set"
+                    % model_name
+                )
                 return None
             else:
                 raise
