@@ -193,16 +193,10 @@ tasks:
                git -c advice.detachedHead=false checkout ${head_rev} &&
                pip install --quiet . &&
                pip install --quiet -r test-requirements.txt &&
-               pip install -U docker-compose==17.04.0 &&
                echo 'Install Docker' &&
                apt-get update &&
-               apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common redis-server &&
-               curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - &&
-               add-apt-repository 'deb [arch=amd64] https://download.docker.com/linux/debian stretch stable' &&
-               apt-get update &&
-               apt-get install -y docker-ce &&
+               apt-get install -y redis-server &&
                python -c 'import os; print(os.environ.keys())' &&
-               env DOCKER_HOST=unix:///var/run/docker.sock COMPOSE_API_VERSION=1.18 docker-compose ps &&
                bash ./scripts/integration_test.sh"
         metadata:
           name: bugbug integration test
