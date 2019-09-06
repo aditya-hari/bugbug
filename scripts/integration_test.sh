@@ -58,4 +58,4 @@ worker_pid=$!
 trap 'kill $gunicorn_pid && kill $worker_pid && kill $redis_pid' EXIT
 
 # Then check that we can correctly classify a bug
-sleep 10 && python tests/test_integration.py
+sleep 10 && python http_service/tests/test_integration.py
